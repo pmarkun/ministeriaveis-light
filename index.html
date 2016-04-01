@@ -4,7 +4,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Como vota?</title>
+  <title>Ministeriaveis</title>
   <!-- Latest compiled and minified CSS -->
 
   <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -34,12 +34,32 @@
   }
   </script>
   <style>
+  * {
+    font-size: 13px;
+  }
+  .box {
+    margin-top:80px;
+    display:none;
+  }
+
+  .box button {
+    margin-top:5px;
+  }
   .ministerio {
     float:left;
     margin:5px;
     width:250px;
     height:250px;
   }
+
+  .foto:hover {
+    opacity:0.8;
+  }
+
+  .foto:hover .box {
+    display:block;
+  }
+
   .foto {
     width:200px;
     height:200px;
@@ -52,13 +72,25 @@
   .nome, .ministro {
     width:250px;
   }
+
+  .PMDB {
+    color:#F00;
+    font-weight: bold;
+  }
   </style>
 
   <script id="entry-template" type="text/x-handlebars-template">
  <div id="{{Sigla}}" class="ministerio">
-          <div class="foto" style="background-image:url('{{Foto}}');"></div>
-          <div class="nome">{{Ministerio}}</div>
-          <div class="ministro">{{Ministro}} - {{Partido}}</div>
+          <div class="foto" style="background-image:url('{{Foto}}');">
+              <div class="box">
+                <button>Sugerir nome</button><br />
+                <button>Remover ministério</button>
+              </div>
+          </div>
+          <div class="nome">
+              {{Ministerio}} <span class="atrib">[<a href="#" title="{{Atribuicoes}}">+</a>]</span>
+          </div>
+          <div class="ministro">{{Ministro}} - <span class="{{Partido}}">{{Partido}}</span></div>
           </div>
       
 </script>
