@@ -9,12 +9,18 @@
 
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/bootstrap-editable.css">
 
   <script src="js/jquery.min.js"></script>
   <script src="js/handlebars.js"></script>
   <script src="js/tabletop.js"></script>
+  <script src="js/bootstrap-editable.js"></script>
+
   <script type="text/javascript">
-  window.onload = function() { init() };
+  window.onload = function() {
+    init()
+    $.fn.editable.defaults.mode = 'inline';
+  };
 
   var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1jEKhDymOfRK3DYJyyHCfR13lZr87IkjftOn5mg-PGXg/pubhtml?gid=0&single=true';
 
@@ -29,8 +35,23 @@
     var template = Handlebars.compile(source);
 
     for (d in data) {
-      $(".starter-template").append(template(data[d]));
+      $("#esplanada").append(template(data[d]));
     }
+
+    $(".editable").editable();
+
+    $(".btn-remove").click(function (e) {
+        var mini = $(e.currentTarget).attr('data-ministerio');
+        var lista = $("#"+ mini + ' .atrib a').attr("title").split(';');
+        
+        for (l in lista) {
+          if (lista[l].trim()) {
+              $("#info-box ul").append("<li>"+lista[l].trim()+"</li>");
+          }
+        }
+
+        $("#"+mini).remove()
+    });
   }
   </script>
   <style>
@@ -83,14 +104,13 @@
  <div id="{{Sigla}}" class="ministerio">
           <div class="foto" style="background-image:url('{{Foto}}');">
               <div class="box">
-                <button>Sugerir nome</button><br />
-                <button>Remover ministério</button>
+                <button class="btn-remove" data-ministerio="{{Sigla}}">Remover ministério</button>
               </div>
           </div>
           <div class="nome">
               {{Ministerio}} <span class="atrib">[<a href="#" title="{{Atribuicoes}}">+</a>]</span>
           </div>
-          <div class="ministro">{{Ministro}} - <span class="{{Partido}}">{{Partido}}</span></div>
+          <div class="ministro" data-type="text"><span class="editable">{{Ministro}}</span> - <span class="{{Partido}} editable">{{Partido}}</span></div>
           </div>
       
 </script>
@@ -120,9 +140,14 @@
 
     <div class="container">
 
-      <div class="starter-template">
+      <div id="esplanada" class="col-md-10">
         <h1>Ministeriaveis</h1>
       
+      </div>
+      <div id="info-box" class="col-md-2">
+        <b>Orçamento Restante</b>
+        <b>Atribuições restantes</b>
+        <ul></ul>
       </div>
 
     </div><!-- /.container -->
